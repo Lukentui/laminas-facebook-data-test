@@ -1,11 +1,63 @@
-<div class="hero-unit">
-    <p align="center"><img src="/img/ag-hero.png" alt="Laminas API Tools <?= \ApiTools\VERSION ?>"></p>
+<section class="mb-5">
+    <h2>1. Пожалуйста, авторизуйтесь с помощью Facebook</h2>
+    <p>Будьте внимательны, выберите верный аккаунт.</p>
+
+    <fb:login-button
+            scope="public_profile,email,instagram_basic,pages_show_list"
+            onlogin="app.checkLoginState()"
+    >
+    </fb:login-button>
+</section>
+
+<hr>
+
+<div id="app">
+    <section class="mt-5" :class="{ 'section--inactive': !isNextStep  }">
+        <h2>2. Получите данные из Facebook</h2>
+        <p>На сколько я понял, может быть привязано несколько бизнес аккаунтов, а к ним аккаунты Instagram. Если так, то будут выведены построчно аккаунт Instagram и 3 фото к нему.</p>
+
+        <div class="media" :class="{ 'media--inactive': !isNextStep  }">
+            <img class="mr-3" :src="user.picture" :alt="user.name">
+            <div class="media-body">
+                <h5 class="mt-0">{{ user.name }}</h5>
+                <p>Знакомтесь, это - Вы.</p>
+
+                <div class="row instagram__row" v-for="account in accounts" v-bind:key="account.id">
+                    <!-- 1 row = 1 ig acc -->
+                    <div class="col-3">
+                        <div class="card row__card">
+                            <div class="card-body">
+                                <h5 class="card-title">Кратко об аккаунте</h5>
+                                <p class="mb-0">
+                                    <span>Логин: {{ account.username }}</span><br>
+                                    <span>Имя: {{ account.name }}</span><br>
+                                    <span>Био: {{ account.biography }}</span><br>
+                                    <span>Кол-во подписчиков: {{ account.followers_count }}</span><br>
+                                    <span>Кол-во подписок: {{ account.follows_count }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ig-media v-for="media in account.media" v-bind:key="media.id" :media="media" />
+                </div>
+
+                <span v-if="!accounts.length">У вас нет привязанных аккаутов :/</span>
+            </div>
+        </div>
+    </section>
 </div>
-<div class="row">
-    <div class="span8">
-        <p><br /><br />In order to use the <strong>Laminas API Tools Admin UI</strong> you need to enable the <strong>development</strong> mode. Currently your application is running in <strong>production</strong> mode.</p>
-        <p>To enable the development mode you can execute the following command from the terminal:</p>
-        <p><pre>$ composer development-enable</pre></p>
-        <p>Remember to set always the production mode if you want to deploy your API in a staging/production environment.</p>
-    </div>
-</div>
+
+<?php $this->headStyle()->captureStart() ?>
+.section--inactive {
+    opacity: .5;
+}
+
+.media--inactive {
+    filter: blur(5px)
+}
+
+.instagram__row .row__card {
+    height: 100%;
+}
+<?php $this->headStyle()->captureEnd() ?>

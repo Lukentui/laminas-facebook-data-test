@@ -1,0 +1,11 @@
+.section--inactive {
+    opacity: .5;
+}
+
+.media--inactive {
+    filter: blur(5px);
+}
+
+.instagram__row .row__card {
+    height: 100%;
+}

@@ -13,7 +13,7 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 return [
     'router' => [
         'routes' => [
-            'home' => [
+            'index' => [
                 'type' => 'Literal',
                 'options' => [
                     'route'    => '/',
